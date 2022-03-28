@@ -25,6 +25,9 @@ export class UsersService {
    * @returns {Promise<User>} - the user with the given ID.
    */
   findOne(id: number) {
+    if (!id) {
+      return null;
+    }
     return this.userRepo.findOneBy({ id });
   }
   /**
