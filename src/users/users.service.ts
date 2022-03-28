@@ -7,19 +7,41 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
+  /**
+   * Creates a new user with the given email and password.
+   * @param {string} email - the email of the new user.
+   * @param {string} password - the password of the new user.
+   * @returns {Promise<User>} A promise that resolves to the new user.
+   */
   create(email: string, password: string) {
     const newUser = this.userRepo.create({ email, password });
 
     return this.userRepo.save(newUser);
   }
 
+  /**
+   * Finds a user by their ID.
+   * @param {number} id - the ID of the user to find.
+   * @returns {Promise<User>} - the user with the given ID.
+   */
   findOne(id: number) {
     return this.userRepo.findOneBy({ id });
   }
+  /**
+   * Finds a user by email.
+   * @param {string} email - the email of the user to find.
+   * @returns {Promise<User>} - the user with the given email.
+   */
   find(email: string) {
     return this.userRepo.find({ where: { email } });
   }
-  // update
+
+  /**
+   * Updates the user with the given id with the given attributes.
+   * @param {number} id - the id of the user to update
+   * @param {Partial<User>} attrs - the attributes to update the user with
+   * @returns {Promise<User>}
+   */
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
     if (!user) {
@@ -28,7 +50,12 @@ export class UsersService {
     Object.assign(user, attrs);
     return this.userRepo.save(user);
   }
-  // remove
+
+  /**
+   * Removes a user from the database.
+   * @param {number} id - the id of the user to remove
+   * @returns None
+   */
   async remove(id: number) {
     const user = await this.findOne(id);
     if (!user) {
