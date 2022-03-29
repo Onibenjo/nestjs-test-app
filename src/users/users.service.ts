@@ -28,7 +28,8 @@ export class UsersService {
     if (!id) {
       return null;
     }
-    return this.userRepo.findOneBy({ id });
+    return this.userRepo.findOne({ id });
+    // return this.userRepo.findOneBy({ id });
   }
   /**
    * Finds a user by email.

@@ -11,20 +11,20 @@ import {
   Post,
   Query,
   Session,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CreateUserDto } from './dtos/create-user.dtos';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
-import { CurrentUserInterceptor } from '../interceptors/current-user.interceptor';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('auth')
 @Serialize(UserDto)
-@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
   constructor(
     private userService: UsersService,
@@ -32,8 +32,8 @@ export class UsersController {
   ) {}
 
   @Get('/me')
-  async getCurrentUser(@CurrentUser() user: string) {
-    console.log(user);
+  @UseGuards(AuthGuard)
+  async getCurrentUser(@CurrentUser() user: User) {
     return user;
   }
 
