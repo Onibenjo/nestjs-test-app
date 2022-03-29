@@ -13,9 +13,9 @@ import {
   Session,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { AuthService } from '../auth/auth.service';
+import { AuthGuard } from '../guards/auth.guard';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CreateUserDto } from './dtos/create-user.dtos';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -68,7 +68,7 @@ export class UsersController {
   }
 
   @Get()
-  async getUser(@Query('email') email: string) {
+  async getUsers(@Query('email') email: string) {
     return await this.userService.find(email);
   }
 

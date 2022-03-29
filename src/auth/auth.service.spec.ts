@@ -15,7 +15,11 @@ describe('AuthService', () => {
       find: (em) =>
         Promise.resolve(users.filter(({ email }) => email === em) as User[]),
       create: (email: string, password: string) => {
-        const user = { id: 1, email, password } as User;
+        const user = {
+          id: Math.floor(Math.random() * 999999),
+          email,
+          password,
+        } as User;
         users.push(user);
         return Promise.resolve(user);
       },
@@ -56,9 +60,15 @@ describe('AuthService', () => {
   });
 
   it('throws if an invalid password is provided', async () => {
-    await expect(service.signIn(em, 'pess')).rejects.toThrow(
+    await expect(service.signIn(em, 'pass')).rejects.toThrow(
       BadRequestException,
     );
+  });
+
+  it('returns a user if correct cred provided', async () => {
+    const user = await service.signIn(em, pass);
+
+    expect(user).toBeDefined();
   });
 });
 
