@@ -1,4 +1,4 @@
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
