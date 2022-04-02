@@ -22,13 +22,19 @@ switch (process.env.NODE_ENV) {
     // config.password = 'root';
     config.database = 'test.sqlite';
     config.type = 'sqlite';
+    config.entities = ['**/*.entity.ts'];
+    config.migrationsRun = true;
     break;
   case 'production':
     // config.host = 'test.sqlite';
     // config.user = 'root';
     // config.password = 'root';
-    config.database = 'test.sqlite';
-    config.type = 'pg';
+    config.url = process.env.DATABASE_URL;
+    config.type = 'postgres';
+    config.migrationsRun = true;
+    config.ssl = {
+      rejectUnauthorized: false,
+    };
     break;
   default:
     throw new Error('unknown environment');
