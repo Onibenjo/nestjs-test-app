@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateReportDto } from './dtos/create-report.dto';
 import { Report } from './report.entity';
+import { GetEstimateDto } from './dtos/get-estimate.dto';
 
 @Injectable()
 export class ReportsService {
@@ -28,5 +29,22 @@ export class ReportsService {
     }
     report.approved = approved;
     return this.repo.save(report);
+  }
+
+  async createEstimate(estimateDto: GetEstimateDto) {
+    const { make, model, lng, lat, year } = estimateDto;
+    return this.repo
+      .createQueryBuilder()
+      .select('*')
+      .where('make = :make', { make })
+      .andWhere('model = :model', { model })
+      .andWhere('lng - :lng BETWEEN -5 AND 5', { lng })
+      .andWhere('lat - :lat BETWEEN -5 AND 5', { lat })
+      .andWhere('year - :year BETWEEN -3 AND 3', { year })
+      .getRawMany();
+  }
+
+  async getAllReports() {
+    return this.repo.find();
   }
 }
